@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF describes the ME/CS/EE 169 bot, -->
+<!-- with the front edge at the big wheels!    -->
+
+<robot name="bot">
+
+  <!-- Pick the colors.  These are not needed with the obj visuals! -->
+  <material name="body">  <color rgba="0.79 0.82 0.93 1"/> </material>
+  <material name="wheel"> <color rgba="0.39 0.41 0.46 1"/> </material>
+
+  <!-- The base is the midpoint between the wheels on the ground. -->
+  <!-- With the x-axis pointing forward.                          -->
+  <link name="base"/>
+
+  <!-- Move up to the wheel axle (midway between the wheels). -->
+  <!-- With the x-axis pointing forward.                      -->
+  <joint name="basetoaxle" type="fixed">
+    <parent link="base"/>
+    <child  link="axle"/>
+    <origin xyz="0 0 0.0328" rpy="0 0 0"/>
+  </joint>
+
+  <link name="axle"/>
+
+  <!-- Left wheel, rotated to z pointing left. The frame is centered  -->
+  <!-- above the middle of the wheel, visual attached at the outside. -->
+  <joint name="leftwheeljoint" type="fixed">
+    <parent link="axle"/>
+    <child  link="leftwheel"/>
+    <origin xyz="0 0.0650 0" rpy="1.5708 0 -3.1416"/>
+    <axis   xyz="0 0 1"/>
+  </joint>
+
+  <link name="leftwheel">
+    <visual>
+      <origin xyz="0 0 0.0126" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/wheel.obj"/>
+      </geometry>
+      <material name="wheel"/>
+    </visual>
+  </link>
+
+  <!-- Right wheel, rotated to z pointing right. The frame is centered -->
+  <!-- above the middle of the wheel, visual attached at the outside.  -->
+  <joint name="rightwheeljoint" type="fixed">
+    <parent link="axle"/>
+    <child  link="rightwheel"/>
+    <origin xyz="0 -0.0650 0" rpy="1.5708 0 0"/>
+    <axis   xyz="0 0 1"/>
+  </joint>
+
+  <link name="rightwheel">
+    <visual>
+      <origin xyz="0 0 0.0126" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/wheel.obj"/>
+      </geometry>
+      <material name="wheel"/>
+    </visual>
+  </link>
+
+  <!-- Rotate to match the body.  The x-axis points to the caster. -->
+  <!-- We also attach the visual model here.                       -->
+  <joint name="axletobody" type="fixed">
+    <parent link="axle"/>
+    <child  link="body"/>
+    <origin xyz="0 0 0" rpy="0 0 3.1416"/>
+  </joint>
+
+  <link name="body">
+    <visual>
+      <origin xyz="0.0459 0 0.0130" rpy="1.5708 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://bot_description/meshes/base_link.obj"/>
+      </geometry>
+      <material name="body"/>
+    </visual>
+  </link>
+
+  <!-- Lidar = scan frame                            -->
+  <!-- The lidar is 0.0960 above the wheel axle.     -->
+  <!--          and 0.0675 behind toward the caster. -->
+  <joint name="bodytolidar" type="fixed">
+    <parent link="body"/>
+    <child  link="lidar"/>
+    <origin xyz="0.0675 0 0.0960" rpy="0 0 0"/>
+  </joint>
+
+  <link name="lidar"/>
+
+</robot>
